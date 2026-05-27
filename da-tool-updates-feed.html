@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DA | Tool Updates</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F7F6F2;
+    --surface: #FFFFFF;
+    --border: rgba(0,0,0,0.08);
+    --border-strong: rgba(0,0,0,0.15);
+    --text-primary: #1A1A18;
+    --text-secondary: #6B6B67;
+    --text-tertiary: #A0A09C;
+    --accent: #1A1A18;
+    --radius: 10px;
+    --font: 'DM Sans', sans-serif;
+    --mono: 'DM Mono', monospace;
+  }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 2rem 1.5rem;
+  }
+
+  header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 1.75rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-strong);
+  }
+
+  .header-left h1 {
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+
+  .header-left p {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    margin-top: 3px;
+    font-family: var(--mono);
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #ts {
+    font-size: 11px;
+    font-family: var(--mono);
+    color: var(--text-tertiary);
+  }
+
+  .btn {
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    padding: 5px 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.15s;
+  }
+  .btn:hover { background: #F0EFEB; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.15s;
+  }
+  .card:hover { border-color: var(--border-strong); }
+
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .card-head-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .source-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .source-tag {
+    font-size: 10px;
+    font-family: var(--mono);
+    color: var(--text-tertiary);
+    margin-top: 1px;
+  }
+
+  .card-body {
+    padding: 12px 14px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 90px;
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .item a {
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 400;
+  }
+  .item a:hover { text-decoration: underline; color: #000; }
+
+  .item-date {
+    font-size: 10px;
+    font-family: var(--mono);
+    color: var(--text-tertiary);
+  }
+
+  .state-msg {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    font-family: var(--mono);
+    margin: auto 0;
+  }
+
+  .state-err {
+    font-size: 11px;
+    color: #C0392B;
+    font-family: var(--mono);
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+    line-height: 1.4;
+  }
+
+  .card-foot {
+    border-top: 1px solid var(--border);
+    padding: 7px 14px;
+  }
+
+  .card-foot a {
+    font-size: 11px;
+    font-family: var(--mono);
+    color: var(--text-tertiary);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .card-foot a:hover { color: var(--text-secondary); }
+
+  .spinner {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border: 1.5px solid var(--border-strong);
+    border-top-color: var(--text-secondary);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 480px) {
+    .grid { grid-template-columns: 1fr; }
+    header { flex-direction: column; align-items: flex-start; gap: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <h1>Tool updates</h1>
+    <p>AI &amp; productivity — latest releases</p>
+  </div>
+  <div class="header-right">
+    <span id="ts"></span>
+    <button class="btn" onclick="init()">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 4v6h6"/><path d="M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+      Refresh
+    </button>
+  </div>
+</header>
+
+<div class="grid" id="grid"></div>
+
+<script>
+const PROXY = "https://api.allorigins.win/get?url=";
+
+const sources = [
+  { id:"openai",    name:"OpenAI",           tag:"news & releases",  color:"#1D9E75", url:"https://openai.com/news/rss.xml",         home:"https://openai.com/news" },
+  { id:"anthropic", name:"Anthropic",         tag:"news",             color:"#534AB7", url:"https://www.anthropic.com/rss.xml",       home:"https://www.anthropic.com/news" },
+  { id:"google",    name:"Google Workspace",  tag:"blog",             color:"#378ADD", url:"https://workspace.google.com/blog/feed",  home:"https://workspace.google.com/blog" },
+  { id:"msft",      name:"Microsoft 365",     tag:"tech community",   color:"#185FA5", url:"https://techcommunity.microsoft.com/plugins/custom/microsoft/o365/custom-blog-rss?tid=microsoft365&board=microsoft365blog&size=10", home:"https://techcommunity.microsoft.com/category/microsoft365" },
+  { id:"slack",     name:"Slack",             tag:"release notes",    color:"#BA7517", url:"https://slack.com/intl/en-gb/release-notes/feed", home:"https://slack.com/release-notes" },
+  { id:"notion",    name:"Notion",            tag:"blog",             color:"#D4537E", url:"https://www.notion.so/blog/rss.xml",      home:"https://www.notion.so/blog" },
+];
+
+function ago(str) {
+  if (!str) return "";
+  const d = new Date(str);
+  if (isNaN(d)) return "";
+  const s = Math.floor((Date.now() - d) / 1000);
+  if (s < 3600) return Math.floor(s/60) + "m ago";
+  if (s < 86400) return Math.floor(s/3600) + "h ago";
+  if (s < 604800) return Math.floor(s/86400) + "d ago";
+  return d.toLocaleDateString(undefined, { month:"short", day:"numeric" });
+}
+
+function parseRSS(xml) {
+  const doc = new DOMParser().parseFromString(xml, "text/xml");
+  const items = Array.from(doc.querySelectorAll("item")).slice(0, 4);
+  return items.map(i => ({
+    title: i.querySelector("title")?.textContent?.trim() || "Untitled",
+    link:  i.querySelector("link")?.textContent?.trim() || "#",
+    date:  i.querySelector("pubDate,published,updated")?.textContent || ""
+  }));
+}
+
+function skeleton(s) {
+  return `<div class="card" id="card-${s.id}">
+    <div class="card-head">
+      <div class="dot" style="background:${s.color}"></div>
+      <div class="card-head-text">
+        <div class="source-name">${s.name}</div>
+        <div class="source-tag">${s.tag}</div>
+      </div>
+    </div>
+    <div class="card-body"><span class="state-msg"><span class="spinner"></span></span></div>
+    <div class="card-foot"><a href="${s.home}" target="_blank" rel="noopener">View all &rarr;</a></div>
+  </div>`;
+}
+
+function setBody(id, html) {
+  const el = document.querySelector(`#card-${id} .card-body`);
+  if (el) el.innerHTML = html;
+}
+
+async function loadFeed(s) {
+  try {
+    const res = await fetch(PROXY + encodeURIComponent(s.url));
+    const json = await res.json();
+    if (!json.contents) throw new Error("empty");
+    const items = parseRSS(json.contents);
+    if (!items.length) throw new Error("no items");
+    setBody(s.id, items.map(it =>
+      `<div class="item">
+        <a href="${it.link}" target="_blank" rel="noopener">${it.title}</a>
+        <span class="item-date">${ago(it.date)}</span>
+      </div>`
+    ).join(""));
+  } catch {
+    setBody(s.id, `<span class="state-err">Feed unavailable &mdash; <a href="${s.home}" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">visit site directly</a></span>`);
+  }
+}
+
+function init() {
+  document.getElementById("grid").innerHTML = sources.map(skeleton).join("");
+  document.getElementById("ts").textContent = "";
+  Promise.all(sources.map(loadFeed)).then(() => {
+    const now = new Date();
+    document.getElementById("ts").textContent = "Updated " + now.toLocaleTimeString([], { hour:"2-digit", minute:"2-digit" });
+  });
+}
+
+init();
+</script>
+</body>
+</html>
